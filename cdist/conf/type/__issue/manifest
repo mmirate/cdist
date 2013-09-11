@@ -26,13 +26,16 @@ os="$(cat "$__global/explorer/os")"
 if [ -f "$__object/parameter/source" ]; then
     source="$(cat "$__object/parameter/source")"
 else
-    case "$os" in
-        archlinux|redhat)
-            source="$__type/files/$os"
-        ;;
-        *)
+    case $os in
+        *[^-[:alnum:]]*)
             source="$__type/files/default"
-        ;;
+            ;;
+        *)
+            source="$__type/files/$os"
+            if ! [ -f "$source" ]; then
+                source="$__type/files/default"
+            fi
+
     esac
 fi
 
